@@ -60,7 +60,7 @@
         android:padding="10dp"
         android:drawableEnd="@drawable/hide_password"
         android:hint="@string/input_password"/>
-    
+
     <Button
         android:id="@+id/btnLogin"
         android:layout_width="match_parent"
