@@ -1,7 +1,12 @@
 package com.example.dclassicsbooks;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
@@ -12,10 +17,19 @@ public class StoresActivity extends AppCompatActivity {
     private StoreAdapter adapter;
     private List<Store> storeList;
 
+    DrawerLayout drawerLayoutStore;
+    ImageView btnMenuStorePage, btnCloseStorePage;
+    LinearLayout btnNavHome;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stores);
+
+        drawerLayoutStore = findViewById(R.id.drawerLayoutStore);
+        btnMenuStorePage = findViewById(R.id.btnMenuStorePage);
+        btnCloseStorePage = findViewById(R.id.btnCloseStorePage);
+        btnNavHome = findViewById(R.id.btnNavHome);
 
         rvStores = findViewById(R.id.rvStores);
         rvStores.setLayoutManager(new LinearLayoutManager(this));
@@ -30,5 +44,19 @@ public class StoresActivity extends AppCompatActivity {
 
         adapter = new StoreAdapter(storeList);
         rvStores.setAdapter(adapter);
+
+        btnMenuStorePage.setOnClickListener(v -> {
+            drawerLayoutStore.openDrawer(GravityCompat.START);
+        });
+
+        btnCloseStorePage.setOnClickListener(v -> {
+            drawerLayoutStore.closeDrawer(GravityCompat.START);
+        });
+
+        btnNavHome.setOnClickListener(v -> {
+            Intent intent = new Intent(StoresActivity.this, HomeActivity.class);
+            startActivity(intent);
+            finish();
+        });
     }
 }

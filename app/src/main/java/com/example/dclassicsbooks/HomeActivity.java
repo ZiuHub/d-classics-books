@@ -1,8 +1,10 @@
 package com.example.dclassicsbooks;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -25,6 +27,7 @@ public class HomeActivity extends AppCompatActivity {
 
     ImageView btnNext, btnPrev;
     RecyclerView rvBooks;
+    LinearLayout btnMenuStore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,7 @@ public class HomeActivity extends AppCompatActivity {
         btnNext = findViewById(R.id.btnNext);
         btnPrev = findViewById(R.id.btnPrev);
         rvBooks = findViewById(R.id.rvBooks);
+        btnMenuStore = findViewById(R.id.btnMenuStore);
 
         SharedPreferences prefs = getSharedPreferences("MyApp", MODE_PRIVATE);
         String username = prefs.getString("USERNAME", "User");
@@ -138,5 +142,10 @@ public class HomeActivity extends AppCompatActivity {
 
         rvBooks.setLayoutManager(new LinearLayoutManager(this));
         rvBooks.setAdapter(new BookAdapter(titles, authors, prices, bookImages));
+
+        btnMenuStore.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, StoresActivity.class);
+            startActivity(intent);
+        });
     }
 }
