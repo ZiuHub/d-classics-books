@@ -119,6 +119,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/btnNavBooks"
             android:layout_width="match_parent"
             android:layout_height="44dp"
             android:background="@drawable/bg_menu_item"
@@ -174,6 +175,7 @@
             android:layout_weight="1"/>
 
         <LinearLayout
+            android:id="@+id/btnNavLogout"
             android:layout_width="match_parent"
             android:layout_height="44dp"
             android:background="@drawable/bg_menu_item"

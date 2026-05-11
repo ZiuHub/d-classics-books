@@ -24,10 +24,9 @@ public class HomeActivity extends AppCompatActivity {
     ViewPager2 viewPager2;
     DrawerLayout drawerLayout;
     ImageView btnMenu, btnClose;
-
     ImageView btnNext, btnPrev;
     RecyclerView rvBooks;
-    LinearLayout btnMenuStore;
+    LinearLayout btnNavHome, btnNavBooks, btnMenuStore, btnNavLogout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,17 +48,17 @@ public class HomeActivity extends AppCompatActivity {
         btnNext = findViewById(R.id.btnNext);
         btnPrev = findViewById(R.id.btnPrev);
         rvBooks = findViewById(R.id.rvBooks);
+
+        btnNavHome = findViewById(R.id.btnNavHome);
+        btnNavBooks = findViewById(R.id.btnNavBooks);
         btnMenuStore = findViewById(R.id.btnMenuStore);
+        btnNavLogout = findViewById(R.id.btnNavLogout);
 
         SharedPreferences prefs = getSharedPreferences("MyApp", MODE_PRIVATE);
         String username = prefs.getString("USERNAME", "User");
         tvGreeting.setText("Hello, " + username + "!");
 
-        int[] images = {
-                R.drawable.banner1,
-                R.drawable.banner2,
-                R.drawable.banner3
-        };
+        int[] images = { R.drawable.banner1, R.drawable.banner2, R.drawable.banner3 };
 
         BannerAdapter adapter = new BannerAdapter(images);
         viewPager2.setAdapter(adapter);
@@ -69,33 +68,23 @@ public class HomeActivity extends AppCompatActivity {
             page.setScaleY(0.85f + (1 - Math.abs(position)) * 0.15f);
         });
 
-        btnMenu.setOnClickListener(v -> {
-            drawerLayout.openDrawer(GravityCompat.START);
-        });
-
-        btnClose.setOnClickListener(v -> {
-            drawerLayout.closeDrawer(GravityCompat.START);
-        });
+        btnMenu.setOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
+        btnClose.setOnClickListener(v -> drawerLayout.closeDrawer(GravityCompat.START));
 
         btnNext.setOnClickListener(v -> {
             int next = viewPager2.getCurrentItem() + 1;
-            if (next < adapter.getItemCount()) {
-                viewPager2.setCurrentItem(next);
-            }
+            if (next < adapter.getItemCount()) viewPager2.setCurrentItem(next);
         });
 
         btnPrev.setOnClickListener(v -> {
             int prev = viewPager2.getCurrentItem() - 1;
-            if (prev >= 0) {
-                viewPager2.setCurrentItem(prev);
-            }
+            if (prev >= 0) viewPager2.setCurrentItem(prev);
         });
 
         viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
                 int last = viewPager2.getAdapter().getItemCount() - 1;
-
                 if (position == 0) {
                     btnPrev.setBackgroundResource(R.drawable.bg_button_prev_inactive);
                     btnNext.setBackgroundResource(R.drawable.bg_button_next);
@@ -112,40 +101,24 @@ public class HomeActivity extends AppCompatActivity {
         btnPrev.setBackgroundResource(R.drawable.bg_button_prev_inactive);
         btnNext.setBackgroundResource(R.drawable.bg_button_next);
 
-        String[] titles = {
-                "The Floating World",
-                "The Psychology of Money",
-                "The Hobbit",
-                "The Blanket Cats"
-        };
-
-        String[] authors = {
-                "Axie Oh",
-                "Morgan Housel",
-                "J. R. R. Tolkien",
-                "Kiyoshi Shigematsu"
-        };
-
-        String[] prices = {
-                "Rp125.000",
-                "Rp110.000",
-                "Rp230.000",
-                "Rp150.000"
-        };
-
-        int[] bookImages = {
-                R.drawable.the_floating_world,
-                R.drawable.the_psychology_of_money,
-                R.drawable.the_hobbit,
-                R.drawable.the_blanket_cats
-        };
+        String[] titles = { "The Floating World", "The Psychology of Money", "The Hobbit", "The Blanket Cats" };
+        String[] authors = { "Axie Oh", "Morgan Housel", "J. R. R. Tolkien", "Kiyoshi Shigematsu" };
+        String[] prices = { "Rp125.000", "Rp110.000", "Rp230.000", "Rp150.000" };
+        int[] bookImages = { R.drawable.the_floating_world, R.drawable.the_psychology_of_money, R.drawable.the_hobbit, R.drawable.the_blanket_cats };
 
         rvBooks.setLayoutManager(new LinearLayoutManager(this));
         rvBooks.setAdapter(new BookAdapter(titles, authors, prices, bookImages));
 
-        btnMenuStore.setOnClickListener(v -> {
-            Intent intent = new Intent(HomeActivity.this, StoresActivity.class);
-            startActivity(intent);
+        btnMenuStore.setOnClickListener(v -> startActivity(new Intent(HomeActivity.this, StoresActivity.class)));
+
+        btnNavBooks.setOnClickListener(v -> startActivity(new Intent(HomeActivity.this, BooksActivity.class)));
+
+        btnNavLogout.setOnClickListener(v -> {
+            SharedPreferences.Editor editor = getSharedPreferences("MyApp", MODE_PRIVATE).edit();
+            editor.clear();
+            editor.apply();
+            startActivity(new Intent(HomeActivity.this, LoginActivity.class));
+            finishAffinity();
         });
     }
 }
